@@ -1,0 +1,36 @@
+import java.io.File
+import kotlin.math.abs
+
+fun main() {
+    // Get the two lists of points for each line
+    val file = File("day3.txt").useLines { it.toList() }.map { it.toPoints() }
+    // Find the nearest point's distance
+    val nearestPointDistance = file[0].intersect(file[1]).map { abs(it[0]) + abs(it[1]) }.min()
+
+    println(nearestPointDistance)
+}
+
+// Converts a string of wire directions to a list of points that the wire covers
+fun String.toPoints(): MutableSet<List<Int>> {
+    // Stuff needed for the function
+    var curX = 0
+    var curY = 0
+    val instructions = this.split(",")
+
+    // Other thing
+    val points = emptySet<List<Int>>().toMutableSet()
+
+    instructions.forEach {
+        for (i in 0 until it.substring(1).toInt()) {
+            when (it[0]) {
+                'R' -> points += listOf(++curX, curY)
+                'L' -> points += listOf(--curX, curY)
+                'U' -> points += listOf(curX, ++curY)
+                'D' -> points += listOf(curX, --curY)
+            }
+        }
+    }
+
+    // Return set of all the points in the wire
+    return points
+}
