@@ -4,21 +4,25 @@ import kotlin.math.abs
 fun main() {
     // Get the two lists of points for each line
     val file = File("day3.txt").useLines { it.toList() }.map { it.toPoints() }
-    // Find the nearest point's distance
-    val nearestPointDistance = file[0].intersect(file[1]).map { abs(it[0]) + abs(it[1]) }.min()
 
+    // Find the nearest intersecting point's distance (Part 1)
+    val nearestPointDistance = file[0].intersect(file[1]).map { abs(it[0]) + abs(it[1]) }.min()
     println(nearestPointDistance)
+
+    // Find the intersecting point requiring the fewest steps (Part 2)
+    val quickestPointDistance = file[0].intersect(file[1]).map { file[0].indexOf(it) + file[1].indexOf(it) + 2 }.min()
+    println(quickestPointDistance) // 48038 < answer < 55535 AND answer != 48040
 }
 
 // Converts a string of wire directions to a list of points that the wire covers
-fun String.toPoints(): MutableSet<List<Int>> {
+fun String.toPoints(): List<List<Int>> {
     // Stuff needed for the function
     var curX = 0
     var curY = 0
     val instructions = this.split(",")
 
     // Other thing
-    val points = emptySet<List<Int>>().toMutableSet()
+    val points = emptyList<List<Int>>().toMutableSet()
 
     instructions.forEach {
         for (i in 0 until it.substring(1).toInt()) {
@@ -32,5 +36,5 @@ fun String.toPoints(): MutableSet<List<Int>> {
     }
 
     // Return set of all the points in the wire
-    return points
+    return points.toList()
 }
