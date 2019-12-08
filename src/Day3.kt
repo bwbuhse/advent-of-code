@@ -22,7 +22,7 @@ fun String.toPoints(): List<List<Int>> {
     val instructions = this.split(",")
 
     // Other thing
-    val points = emptyList<List<Int>>().toMutableSet()
+    val points = emptyList<List<Int>>().toMutableList()
 
     instructions.forEach {
         for (i in 0 until it.substring(1).toInt()) {
