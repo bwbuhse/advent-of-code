@@ -5,14 +5,14 @@ fun main() {
 
     for (i in 0..99) {
         for (j in 0..99) {
-            if (IntCode(i, j) == output) {
+            if (intCode(i, j) == output) {
                 println(100 * i + j)
             }
         }
     }
 }
 
-fun IntCode(noun: Int, verb: Int): Int {
+fun intCode(noun: Int, verb: Int): Int {
     // IntCode
     val intCode = File("day2.txt").useLines { it.toList() }.flatMap { it.split(",") }.map { it.toInt() }.toMutableList()
 
