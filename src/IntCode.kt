@@ -9,18 +9,21 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
     intCode[2] = verb ?: intCode[2]
 
     // Boolean that is set to true once the 99 opcode is reached
-    var stopped = false
     var i = 0
 
     // Loop over the IntCode
     while (i < intCode.size) {
-        when (intCode[i]) {
+        val opcode = intCode[i] % 100
+
+        val parameterModes = (intCode[i] / 100).toString().split("").reversed()
+
+        when (opcode) {
             1 -> {
-                intCode[intCode[i + 3]] = intCode[intCode[i + 1]] + intCode[intCode[i + 2]];
+                intCode[intCode[i + 3]] = intCode[intCode[i + 1]] + intCode[intCode[i + 2]]
                 i += 4
             }
             2 -> {
-                intCode[intCode[i + 3]] = intCode[intCode[i + 1]] * intCode[intCode[i + 2]];
+                intCode[intCode[i + 3]] = intCode[intCode[i + 1]] * intCode[intCode[i + 2]]
                 i += 4
             }
             3 -> {
@@ -32,11 +35,9 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
                 i += 2
             }
             99 -> {
-                stopped = true;
                 i = intCode.size
             }
-            else -> if (!stopped) {
-                stopped = true
+            else -> {
                 i = intCode.size
                 println("You broke something.")
             }
