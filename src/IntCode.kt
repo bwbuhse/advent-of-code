@@ -1,6 +1,6 @@
 import java.io.File
 
-fun intCode(file: String, noun: Int, verb: Int): Int {
+fun evaluateIntCode(file: String, noun: Int, verb: Int): Int {
     // IntCode
     val intCode = File(file).useLines { it.toList() }.flatMap { it.split(",") }.map { it.toInt() }.toMutableList()
 
@@ -10,16 +10,35 @@ fun intCode(file: String, noun: Int, verb: Int): Int {
 
     // Boolean that is set to true once the 99 opcode is reached
     var stopped = false
-    var broken = false
+    var i = 0
 
     // Loop over the IntCode
-    for (i in 0 until intCode.size step 4) {
+    while (i < intCode.size) {
         when (intCode[i]) {
-            1 -> if (!stopped) intCode[intCode[i + 3]] = intCode[intCode[i + 1]] + intCode[intCode[i + 2]]
-            2 -> if (!stopped) intCode[intCode[i + 3]] = intCode[intCode[i + 1]] * intCode[intCode[i + 2]]
-            99 -> stopped = true
+            1 -> {
+                intCode[intCode[i + 3]] = intCode[intCode[i + 1]] + intCode[intCode[i + 2]];
+                i += 4
+            }
+            2 -> {
+                intCode[intCode[i + 3]] = intCode[intCode[i + 1]] * intCode[intCode[i + 2]];
+                i += 4
+            }
+            3 -> {
+                intCode[intCode[i + 1]] = readLine()!!.toInt()
+                i += 2
+            }
+            4 -> {
+                println(intCode[intCode[i + 1]])
+                i += 2
+            }
+            99 -> {
+                stopped = true;
+                i = intCode.size
+            }
             else -> if (!stopped) {
-                broken = true
+                stopped = true
+                i = intCode.size
+                println("You broke something.")
             }
         }
     }
