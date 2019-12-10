@@ -21,6 +21,7 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
         val parameterModes = (0..3).map { it -> (intCode[i] / 10.0.pow(it) % 10).toInt() }
 
         when (opcode) {
+            // Add
             1 -> {
                 if (parameterModes[2] == 1) {
                     intCode[i + 3] = if (parameterModes[0] == 1) {
@@ -45,6 +46,7 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
                 }
                 i += 4
             }
+            // Multiply
             2 -> {
                 if (parameterModes[2] == 1) {
                     intCode[i + 3] = if (parameterModes[0] == 1) {
@@ -69,6 +71,7 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
                 }
                 i += 4
             }
+            // Input
             3 -> {
                 if (parameterModes[0] == 1) {
                     intCode[i + 1] = readLine()!!.toInt()
@@ -77,6 +80,7 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
                 }
                 i += 2
             }
+            // Output
             4 -> {
                 println(
                     if (parameterModes[0] == 1) {
@@ -87,6 +91,41 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
                 )
                 i += 2
             }
+            // Jump if true
+            5 -> {
+                if (if (parameterModes[0] == 1) {
+                        intCode[i + 1]
+                    } else {
+                        intCode[intCode[i + 1]]
+                    } != 0
+                ) {
+                    i = if (parameterModes[1] == 1) {
+                        intCode[i + 2]
+                    } else {
+                        intCode[intCode[i + 2]]
+                    }
+                } else {
+                    i += 3
+                }
+            }
+            // Jump if false
+            6 -> {
+                if (if (parameterModes[0] == 1) {
+                        intCode[i + 1]
+                    } else {
+                        intCode[intCode[i + 1]]
+                    } == 0
+                ) {
+                    i = if (parameterModes[1] == 1) {
+                        intCode[i + 2]
+                    } else {
+                        intCode[intCode[i + 2]]
+                    }
+                } else {
+                    i += 3
+                }
+            }
+            // Quit
             99 -> {
                 i = intCode.size
             }
