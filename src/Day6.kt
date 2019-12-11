@@ -2,6 +2,7 @@ import java.io.File
 import java.util.*
 
 fun main() {
+    // Map of all bodies to a set of bodies that directly orbit them
     val directOrbits = File("day6.txt").useLines { it.toList() }
         .map { it.split(")") }
         .map { listOf(it[0], it[1]) }
@@ -9,6 +10,11 @@ fun main() {
             map + mapOf(it[0] to (map[it[0]]?.union(setOf(it[1])) ?: setOf(it[1])))
         })
 
+    println(sumAllOrbits(directOrbits))
+}
+
+// Function used for part 1
+fun sumAllOrbits(directOrbits: Map<String, Set<String>>): Int {
     val orbitsToCheck = LinkedList<String>()
     orbitsToCheck += "COM"
 
@@ -23,9 +29,5 @@ fun main() {
         }
     }
 
-    val allOrbitsSum = allOrbits.values.sum()
-
-    println(directOrbits)
-    println(allOrbits)
-    println(allOrbitsSum)
+    return allOrbits.values.sum()
 }
