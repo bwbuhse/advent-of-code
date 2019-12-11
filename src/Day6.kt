@@ -10,11 +10,15 @@ fun main() {
             map + mapOf(it[0] to (map[it[0]]?.union(setOf(it[1])) ?: setOf(it[1])))
         })
 
+    // Part 1
     println(sumAllOrbits(directOrbits))
+
+    // Part 2
+    println(minTransfersBtwnBodies(directOrbits))
 }
 
 // Function used for part 1
-fun sumAllOrbits(directOrbits: Map<String, Set<String>>): Int {
+private fun sumAllOrbits(directOrbits: Map<String, Set<String>>): Int {
     val orbitsToCheck = LinkedList<String>()
     orbitsToCheck += "COM"
 
@@ -30,4 +34,31 @@ fun sumAllOrbits(directOrbits: Map<String, Set<String>>): Int {
     }
 
     return allOrbits.values.sum()
+}
+
+// Functions used for part 2
+private fun minTransfersBtwnBodies(
+    directOrbits: Map<String, Set<String>>,
+    body1: String = "SAN",
+    body2: String = "YOU"
+): Int {
+//    val flippedOrbits = directOrbits.map { if (it.) }
+
+    return 0
+}
+
+private fun createPath(
+    directOrbits: Map<String, Set<String>>,
+    currentBody: String = "COM",
+    destBody: String = "COM",
+    path: List<String> = emptyList()
+): List<String> {
+    val orbitsFromCurrentBody = directOrbits.getOrDefault(currentBody, emptySet())
+    val currentPath = path + currentBody
+
+    return when {
+        orbitsFromCurrentBody.isEmpty() -> emptyList()
+        orbitsFromCurrentBody.contains(destBody) -> currentPath
+        else -> orbitsFromCurrentBody.flatMap { createPath(directOrbits, it, destBody, currentPath) }
+    }
 }
