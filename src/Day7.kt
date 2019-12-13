@@ -12,7 +12,7 @@ fun main() {
                     for (e in 0..4) {
                         if (setOf(a, b, c, d, e).size == 5) {
 
-                            val ioList = listOf(a, 0).toMutableList()
+                            val ioList = mutableListOf(a, 0)
                             evaluateIntCode(file, outputToList = true, ioList = ioList)
                             ioList.add(0, b)
                             evaluateIntCode(file, outputToList = true, ioList = ioList)
