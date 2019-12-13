@@ -11,4 +11,17 @@ fun main() {
     if (layerWithFewestZeroes != null) {
         println(layerWithFewestZeroes.count { it == '1' } * layerWithFewestZeroes.count { it == '2' })
     }
+
+    println("-----")
+
+    // Part 2
+    val image = layers.fold((0 until (width * height)).toList().map { '2' },
+        { image, layer -> layer.mapIndexed { i, it -> if (image[i] != '2') image[i] else it } })
+        .fold("", { string, char -> string + char }).chunked(width).map { it + "\n" }
+        .fold("", { string, char -> string + char })
+        .map { it -> if (it == '0') ' ' else if (it == '1') 35.toChar() else it }
+        .fold("", { string, char -> string + char })
+
+
+    println(image)
 }
