@@ -42,8 +42,8 @@ private fun minTransfersBtwnBodies(
     body1: String = "SAN",
     body2: String = "YOU"
 ): Int {
-    val path1 = createPath(directOrbits, destBody = "SAN")
-    val path2 = createPath(directOrbits, destBody = "YOU")
+    val path1 = createPath(directOrbits, destBody = body1)
+    val path2 = createPath(directOrbits, destBody = body2)
 
     val intersectionSize = path1.intersect(path2).size
 

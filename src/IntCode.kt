@@ -1,7 +1,13 @@
 import java.io.File
 import kotlin.math.pow
 
-fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
+fun evaluateIntCode(
+    file: String,
+    noun: Int? = null,
+    verb: Int? = null,
+    outputToList: Boolean = false,
+    ioList: MutableList<Int> = emptyList<Int>().toMutableList()
+): Int {
     // IntCode
     val intCode = File(file).useLines { it.toList() }.flatMap { it.split(",") }.map { it.toInt() }.toMutableList()
 
@@ -74,9 +80,9 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
             // Input
             3 -> {
                 if (parameterModes[0] == 1) {
-                    intCode[i + 1] = readLine()!!.toInt()
+                    intCode[i + 1] = if (ioList.isNotEmpty()) ioList.removeAt(0) else readLine()!!.toInt()
                 } else {
-                    intCode[intCode[i + 1]] = readLine()!!.toInt()
+                    intCode[intCode[i + 1]] = if (ioList.isNotEmpty()) ioList.removeAt(0) else readLine()!!.toInt()
                 }
                 i += 2
             }
@@ -84,8 +90,16 @@ fun evaluateIntCode(file: String, noun: Int? = null, verb: Int? = null): Int {
             4 -> {
                 println(
                     if (parameterModes[0] == 1) {
+                        if (outputToList) {
+                            ioList.add(intCode[i + 1])
+                        }
+
                         intCode[i + 1]
                     } else {
+                        if (outputToList) {
+                            ioList.add(intCode[intCode[i + 1]])
+                        }
+
                         intCode[intCode[i + 1]]
                     }
                 )
