@@ -15,6 +15,9 @@ fun evaluateIntCode(
     intCode[1] = noun ?: intCode[1]
     intCode[2] = verb ?: intCode[2]
 
+    // Set initial relative base
+    var relBase = 0
+
     // Boolean that is set to true once the 99 opcode is reached
     var i = 0
 
